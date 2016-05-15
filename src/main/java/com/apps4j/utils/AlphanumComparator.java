@@ -37,26 +37,32 @@ package com.apps4j.utils;/*
  *
  * @author Anton Nesterenko
  * @since 0.5.3
- *
+ * <p>
  * Compilation of com.apps4j.utils.NaturalOrderComparator and alphanum comparator. shouldbe integrated
  */
 public class AlphanumComparator {
-    private static boolean isDigit(char ch) {
-        return ch >= 48 && ch <= 57;
-    }
 
     /**
-     * Length of string is passed in for improved efficiency (only need to calculate it once) *
+     * Length of string is passed in for improved efficiency (only need to calculate it once)
+     **/
+
+    /**
+     * splits string by chunks where division point is a change from digit to string and vice versa
+     * @param s - basic string
+     * @param slength - length of basic string
+     * @param marker - position of the starting point
+     * @return chunk of the string from the marker to the next division point
+     * @throws IndexOutOfBoundsException in case marker is greater than length of the basic string
      */
-    private static String getChunk(String s, int slength, int marker) {
+    final String getChunk(String s, int slength, int marker) {
         StringBuilder chunk = new StringBuilder();
         char c = s.charAt(marker);
         chunk.append(c);
         marker++;
-        if (isDigit(c)) {
+        if (Character.isDigit(c)) {
             while (marker < slength) {
                 c = s.charAt(marker);
-                if (!isDigit(c))
+                if (!Character.isDigit(c))
                     break;
                 chunk.append(c);
                 marker++;
@@ -64,7 +70,7 @@ public class AlphanumComparator {
         } else {
             while (marker < slength) {
                 c = s.charAt(marker);
-                if (isDigit(c))
+                if (Character.isDigit(c))
                     break;
                 chunk.append(c);
                 marker++;
@@ -73,7 +79,7 @@ public class AlphanumComparator {
         return chunk.toString();
     }
 
-    public static int compare(Object o1, Object o2) {
+    public int compare(Object o1, Object o2) {
         if (!(o1 instanceof String) || !(o2 instanceof String)) {
             return 0;
         }
@@ -90,7 +96,7 @@ public class AlphanumComparator {
             thatMarker += thatChunk.length();
             // If both chunks contain numeric characters, sort them numerically
             int result = 0;
-            if (isDigit(thisChunk.charAt(0)) && isDigit(thatChunk.charAt(0))) {
+            if (Character.isDigit(thisChunk.charAt(0)) && Character.isDigit(thatChunk.charAt(0))) {
                 // Simple chunk comparison by length.
                 int thisChunkLength = thisChunk.length();
                 result = thisChunkLength - thatChunk.length();
