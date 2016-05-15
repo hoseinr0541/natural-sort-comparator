@@ -35,6 +35,13 @@ public class NaturalSortComparatorTest {
     }
 
     @Test
+    public void getChunkFromMid3Test() {
+        String str = "1111String";
+        String chunk = new AlphanumComparator().getChunk(str, str.length(), 4);
+        Assert.assertEquals("String", chunk);
+    }
+
+    @Test
     public void getChunkFromEnd() {
         String str = "String1111";
         String chunk = new AlphanumComparator().getChunk(str, str.length(), 9);
